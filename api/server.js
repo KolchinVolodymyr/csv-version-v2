@@ -1,47 +1,30 @@
 const express = require('express');
-const path = require('path');
-const app = express(),
-      bodyParser = require("body-parser");
-      port = 8080;
+const upload = require('express-fileupload');
+const cors = require('cors');
+const csv = require('csvtojson');
 
-// place holder for the data
-const users = [
-  {
-    firstName: "first1",
-    lastName: "last1",
-    email: "abc@gmail.com"
-  },
-  {
-    firstName: "first2",
-    lastName: "last2",
-    email: "abc@gmail.com"
-  },
-  {
-    firstName: "first3",
-    lastName: "last3",
-    email: "abc@gmail.com"
-  }
-];
-
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../my-app/build')));
-
-app.get('/api/users', (req, res) => {
-  console.log('api/users called!')
-  res.json(users);
+const app = express();
+//MIDDLEWARES
+app.use(upload({useTempFiles: true}));
+app.use(cors());
+//ROUTE DEFINE
+app.post('/', async function (req, res) {
+    try {
+        const data = [];
+        let getProducts =
+        csv()
+            .fromFile(req.files.File.tempFilePath)
+            .then((jsonObj) => {
+                console.log('json ', jsonObj);
+            })
+        res.status(200).send({
+            message: 'FILE RECEIVED!',
+        });
+    } catch (e) {
+        console.log('error', e)
+    }
 });
 
-app.post('/api/user', (req, res) => {
-  const user = req.body.user;
-  console.log('Adding user:::::', user);
-  users.push(user);
-  res.json("user addedd");
-});
-
-app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, '../my-app/build/index.html'));
-});
-
-app.listen(port, () => {
-    console.log(`Server listening on the port::${port}`);
+app.listen(8080 || process.env.PORT, function () {
+ console.log('Server is running:');
 });
