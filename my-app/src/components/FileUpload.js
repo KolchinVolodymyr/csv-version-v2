@@ -4,7 +4,6 @@ import "./../App.css";
 
 export const FileUpload = () => {
 const [selectedFile, setSelectedFile] = useState();
-const [data, setData] = useState();
 const [isFilePicked, setIsFilePicked] = useState(false);
 
 const changeHandler = (event) => {
@@ -33,8 +32,6 @@ const handleSubmission = () => {
     .then((response) => response.json())
     .then((result) => {
         console.log("Success:", result);
-        setData(result);
-
     })
     .catch((error) => {
         console.error("Error:", error);
