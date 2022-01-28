@@ -19,7 +19,9 @@ app.post('/', async function (req, res) {
     try {
         let countSuccessfully = 0;
         let countError = 0;
+        const ValidationData = [];
         const data = [];
+
         let getProducts =
         csv()
             .fromFile(req.files.File.tempFilePath)
@@ -131,8 +133,8 @@ app.post('/', async function (req, res) {
                 }))
 
                 /*Write CSV*/
-                changeArray.map((el)=>{
-
+                changeArray.map((el, index)=>{
+                    console.log('index', index++);
                     let a = `Email Address:${validator.isEmail(el['Email Address'])}, Last Name:${validator.isLength(el['Last Name'], {min:3, max: undefined})}, First Name:${validator.isLength(el['First Name'], {min:3, max: undefined})}`;
                     switch (
                         validator.isEmail(el['Email Address']) &&
@@ -145,21 +147,21 @@ app.post('/', async function (req, res) {
                             break;
                         case false:
                             countError++;
+                            ValidationData.push([++index, a]);
                             logger.info(`Validation ${JSON.stringify(a)} - ${JSON.stringify(el)}`);
                             break;
                         default:
                             logger.info(`default`);
                             break;
                     }
-                    console.log('countSuccessfully', countSuccessfully);
                 })
             })
             .then(()=>{
-                console.log('countSuccessful2', countSuccessfully);
                 res.status(201).send({
                     message: 'FILE RECEIVED!',
                     countSuccessfully: countSuccessfully,
                     countError: countError,
+                    ValidationData: ValidationData
                 });
             })
 

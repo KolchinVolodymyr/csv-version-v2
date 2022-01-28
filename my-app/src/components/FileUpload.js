@@ -4,6 +4,7 @@ import "./../App.css";
 
 export const FileUpload = () => {
 const [selectedFile, setSelectedFile] = useState();
+const [data, setData] = useState();
 const [isFilePicked, setIsFilePicked] = useState(false);
 
 const changeHandler = (event) => {
@@ -17,12 +18,12 @@ const handleSubmission = () => {
     if (!isFilePicked) return;
         const formData = new FormData();
         formData.append("File", selectedFile);
-        // ALSO ADD RANDOM VALUE IF YOU WANT LIKE STRING , OBJECT OR      ARRAY
-        formData.append("carDetail", {
-            car: "honda",
-            engine: "1498 cc",
-            fuel_Type: "Petrol & Diesel",
-        });
+//        // ALSO ADD RANDOM VALUE IF YOU WANT LIKE STRING , OBJECT OR      ARRAY
+//        formData.append("carDetail", {
+//            car: "honda",
+//            engine: "1498 cc",
+//            fuel_Type: "Petrol & Diesel",
+//        });
 
     // API CALL
     fetch(" http://localhost:8080/", {
@@ -32,6 +33,8 @@ const handleSubmission = () => {
     .then((response) => response.json())
     .then((result) => {
         console.log("Success:", result);
+        setData(result);
+
     })
     .catch((error) => {
         console.error("Error:", error);
@@ -40,18 +43,16 @@ const handleSubmission = () => {
 
 return (
     <div className="form-file">
-
-            <div className="file-field input-field">
-              <div className="btn">
+        <div className="file-field input-field">
+            <div className="btn">
                 <span>File</span>
-                <input type="file" onChange={changeHandler} />
-              </div>
-              <div className="file-path-wrapper">
-                <input className="file-path validate" type="text" />
-              </div>
+                <input type="file" onChange={changeHandler}/>
             </div>
-            <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
-
+            <div className="file-path-wrapper">
+                <input className="file-path validate" type="text"/>
+            </div>
+        </div>
+        <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
     </div>
     );
 };
