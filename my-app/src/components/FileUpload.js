@@ -40,7 +40,7 @@ const handleSubmission = () => {
 
 return (
     <div className="form-file">
-          <form>
+
             <div className="file-field input-field">
               <div className="btn">
                 <span>File</span>
@@ -51,7 +51,7 @@ return (
               </div>
             </div>
             <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
-          </form>
+
     </div>
     );
 };

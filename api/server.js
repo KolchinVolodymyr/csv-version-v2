@@ -17,6 +17,8 @@ app.use(cors());
 //ROUTE DEFINE
 app.post('/', async function (req, res) {
     try {
+        let countSuccessfully = 0;
+        let countError = 0;
         const data = [];
         let getProducts =
         csv()
@@ -130,8 +132,6 @@ app.post('/', async function (req, res) {
 
                 /*Write CSV*/
                 changeArray.map((el)=>{
-                console.log(el['Last Name']);
-                console.log("validator.isLength(el['Last Name'], {min:3, max: undefined})", validator.isLength(el['Last Name'], {min:3, max: undefined}))
 
                     let a = `Email Address:${validator.isEmail(el['Email Address'])}, Last Name:${validator.isLength(el['Last Name'], {min:3, max: undefined})}, First Name:${validator.isLength(el['First Name'], {min:3, max: undefined})}`;
                     switch (
@@ -140,21 +140,29 @@ app.post('/', async function (req, res) {
                         validator.isLength(el['First Name'], {min:3, max: undefined})
                         ) {
                         case true:
+                            countSuccessfully++;
                             writerExport.write(el);
                             break;
                         case false:
+                            countError++;
                             logger.info(`Validation ${JSON.stringify(a)} - ${JSON.stringify(el)}`);
                             break;
                         default:
                             logger.info(`default`);
                             break;
                     }
+                    console.log('countSuccessfully', countSuccessfully);
                 })
-            });
+            })
+            .then(()=>{
+                console.log('countSuccessful2', countSuccessfully);
+                res.status(201).send({
+                    message: 'FILE RECEIVED!',
+                    countSuccessfully: countSuccessfully,
+                    countError: countError,
+                });
+            })
 
-        res.status(200).send({
-            message: 'FILE RECEIVED!',
-        });
     } catch (e) {
         console.log('error', e)
     }
