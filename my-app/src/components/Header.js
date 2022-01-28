@@ -13,7 +13,7 @@ export const Header = () => {
 
     return(
         <div style={headerStyle}>
-            <h1>React With NodeJS</h1>
+            <h3>Customers Migration [Shopify -> BigCommerce]</h3>
         </div>
     )
 }
