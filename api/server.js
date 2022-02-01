@@ -21,7 +21,7 @@ app.post('/', async function (req, res) {
         let countError = 0;
         const ValidationData = [];
         const data = [];
-
+        console.log('req.files.File', req.files.File)
         let getProducts =
         csv()
             .fromFile(req.files.File.tempFilePath)

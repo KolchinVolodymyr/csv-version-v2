@@ -9,33 +9,22 @@ const [isFilePicked, setIsFilePicked] = useState(false);
 const [isShown, setIsShown] = useState(false);
 const [data, setData] = useState([]);
 const [loader, setLoader] = useState(false);
-    // const toggleFIeldset = () => setIsShown(!isShown);
+
 const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     event.target.files[0] && setIsFilePicked(true);
 };
-const download = () => {
-    console.log('download');
-    fetch(" http://localhost:8080/download", {
-        method: "GET",
-    }).then((response) => {
-        console.log('res', response)
-    })
-}
-const handleSubmission = () => {
-    console.log('click');
-    setLoader(true);
-    // HANDLING FILE AS SENDING FILE INTO BACKEND
-    if (!isFilePicked) return;
-        const formData = new FormData();
-        formData.append("File", selectedFile);
-//        // ALSO ADD RANDOM VALUE IF YOU WANT LIKE STRING , OBJECT OR      ARRAY
-//        formData.append("carDetail", {
-//            car: "honda",
-//            engine: "1498 cc",
-//            fuel_Type: "Petrol & Diesel",
-//        });
 
+
+const handleSubmission = () => {
+    // HANDLING FILE AS SENDING FILE INTO BACKEND
+    if (!isFilePicked) {
+        console.log('add allert Error')
+        return
+    };
+    const formData = new FormData();
+    formData.append("File", selectedFile);
+    setLoader(true);
     // API CALL
     fetch(" http://localhost:8080/", {
         method: "POST",
