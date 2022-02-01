@@ -169,6 +169,9 @@ app.post('/', async function (req, res) {
         console.log('error', e)
     }
 });
+app.get('/download', function (req, res, next) {
+    res.download(__dirname + `/${FILENAME_TIMESTAMP_FORMAT}`, `${FILENAME_TIMESTAMP_FORMAT}`);
+});
 
 app.listen(8080 || process.env.PORT, function () {
  console.log('Server is running:');

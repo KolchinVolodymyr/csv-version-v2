@@ -14,7 +14,14 @@ const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     event.target.files[0] && setIsFilePicked(true);
 };
-
+const download = () => {
+    console.log('download');
+    fetch(" http://localhost:8080/download", {
+        method: "GET",
+    }).then((response) => {
+        console.log('res', response)
+    })
+}
 const handleSubmission = () => {
     console.log('click');
     setLoader(true);
@@ -62,11 +69,28 @@ return (
             </div>
         </div>
         <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
+        <a id="myLink" href='http://localhost:8080/download'>LINK 1</a>
+        {/*<button className="waves-effect waves-light btn" onClick={download}>Download</button>*/}
         {isShown &&
             <div>
-                {data.map((el, index)=>{
-                    return(<div key={index}>string{el[0]}:: {el[1]}</div>)
-                })}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Error string</th>
+                            <th>Validation</th>
+                        </tr>
+                    </thead>
+                    {data.map((el, index)=>{
+                        return(
+                            <tbody>
+                                <tr>
+                                    <td>string{el[0]}</td>
+                                    <td>{el[1]}</td>
+                                </tr>
+                            </tbody>
+                        )
+                    })}
+                </table>
             </div>
         }
         {loader  && <Preloader />}
