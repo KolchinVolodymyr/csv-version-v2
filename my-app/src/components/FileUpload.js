@@ -21,7 +21,10 @@ const handleSubmission = () => {
     if (!isFilePicked) {
         console.log('add allert Error')
         return
-    };
+    }
+    if(selectedFile.type !== "text/csv") {
+        console.log('add alert Error on format')
+    }
     const formData = new FormData();
     formData.append("File", selectedFile);
     setLoader(true);
