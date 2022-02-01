@@ -1,18 +1,23 @@
 import React from 'react';
 import { useState } from "react";
 import "./../App.css";
+import {Preloader} from "./Preloader";
 
 export const FileUpload = () => {
 const [selectedFile, setSelectedFile] = useState();
 const [isFilePicked, setIsFilePicked] = useState(false);
-
+const [isShown, setIsShown] = useState(false);
+const [data, setData] = useState([]);
+const [loader, setLoader] = useState(false);
+    // const toggleFIeldset = () => setIsShown(!isShown);
 const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     event.target.files[0] && setIsFilePicked(true);
 };
 
 const handleSubmission = () => {
-    console.log('click')
+    console.log('click');
+    setLoader(true);
     // HANDLING FILE AS SENDING FILE INTO BACKEND
     if (!isFilePicked) return;
         const formData = new FormData();
@@ -32,10 +37,17 @@ const handleSubmission = () => {
     .then((response) => response.json())
     .then((result) => {
         console.log("Success:", result);
+        setData(result.ValidationData)
+        if(isShown !== true) {
+            setIsShown(!isShown);
+        }
     })
     .catch((error) => {
         console.error("Error:", error);
-    });
+    })
+    .finally(()=>{
+        setLoader(false);
+    })
 };
 
 return (
@@ -50,6 +62,14 @@ return (
             </div>
         </div>
         <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
+        {isShown &&
+            <div>
+                {data.map((el, index)=>{
+                    return(<div key={index}>string{el[0]}:: {el[1]}</div>)
+                })}
+            </div>
+        }
+        {loader  && <Preloader />}
     </div>
     );
 };
