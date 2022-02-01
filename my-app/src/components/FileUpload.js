@@ -24,6 +24,7 @@ const handleSubmission = () => {
     }
     if(selectedFile.type !== "text/csv") {
         console.log('add alert Error on format')
+        return
     }
     const formData = new FormData();
     formData.append("File", selectedFile);
