@@ -2,8 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import "./../App.css";
 import {Preloader} from "./Preloader";
-//import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import { useAlert } from 'react-alert'
+import { useAlert } from 'react-alert';
 
 
 export const FileUpload = () => {
@@ -12,7 +11,7 @@ const [isFilePicked, setIsFilePicked] = useState(false);
 const [isShown, setIsShown] = useState(false);
 const [data, setData] = useState([]);
 const [loader, setLoader] = useState(false);
-    const alert = useAlert();
+const alert = useAlert();
 
 const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
