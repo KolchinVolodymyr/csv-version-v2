@@ -2,6 +2,9 @@ import React from 'react';
 import { useState } from "react";
 import "./../App.css";
 import {Preloader} from "./Preloader";
+//import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import { useAlert } from 'react-alert'
+
 
 export const FileUpload = () => {
 const [selectedFile, setSelectedFile] = useState();
@@ -9,21 +12,25 @@ const [isFilePicked, setIsFilePicked] = useState(false);
 const [isShown, setIsShown] = useState(false);
 const [data, setData] = useState([]);
 const [loader, setLoader] = useState(false);
+    const alert = useAlert();
 
 const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     event.target.files[0] && setIsFilePicked(true);
 };
 
-
 const handleSubmission = () => {
     // HANDLING FILE AS SENDING FILE INTO BACKEND
     if (!isFilePicked) {
-        console.log('add allert Error')
+        alert.show("Please select a file ", {
+            title: "Please select a file "
+        });
         return
     }
     if(selectedFile.type !== "text/csv") {
-        console.log('add alert Error on format')
+        alert.show("Incorrect file format. Please select file format .scv", {
+            title: "Incorrect file format"
+        });
         return
     }
     const formData = new FormData();
@@ -43,7 +50,9 @@ const handleSubmission = () => {
         }
     })
     .catch((error) => {
-        console.error("Error:", error);
+        alert.show("Server response error. Status code: 500 ", {
+            title: "Random Alert Title"
+        });
     })
     .finally(()=>{
         setLoader(false);
@@ -54,7 +63,7 @@ return (
     <div className="form-file">
         <div className="file-field input-field">
             <div className="btn">
-                <span>File</span>
+                <span>File .csv</span>
                 <input type="file" onChange={changeHandler}/>
             </div>
             <div className="file-path-wrapper">
@@ -62,8 +71,7 @@ return (
             </div>
         </div>
         <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
-        <a id="myLink" href='http://localhost:8080/download'>LINK 1</a>
-        {/*<button className="waves-effect waves-light btn" onClick={download}>Download</button>*/}
+        <a className="btn waves-effect waves-light position-btn" href='http://localhost:8080/download'>Download</a>
         {isShown &&
             <div>
                 <table>
