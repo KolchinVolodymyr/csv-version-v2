@@ -99,7 +99,7 @@ app.post('/', async function (req, res) {
                     'Address Last Name - 1': item['Last Name'],
                     'Address Company - 1': item['Address Company - 1'],
                     'Address Line 1 - 1': item['Address Line 1 - 1'],
-                    'Address Line 2 - 1': item['Address Line 1 - 2'],
+                    'Address Line 2 - 1': item['Address Line 2 - 1'],
                     'Address City - 1': item['Address City - 1'],
                     'Address State - 1': item['Address State - 1'],
                     'Address Zip - 1': item['Address Zip - 1'],
@@ -134,12 +134,17 @@ app.post('/', async function (req, res) {
 
                 /*Write CSV*/
                 changeArray.map((el, index)=>{
-                    console.log('index', index++);
-                    let a = `Email Address:${validator.isEmail(el['Email Address'])}, Last Name:${validator.isLength(el['Last Name'], {min:3, max: undefined})}, First Name:${validator.isLength(el['First Name'], {min:3, max: undefined})}`;
+                    let a = `Email Address:${validator.isEmail(el['Email Address'])},Last Name:${validator.isLength(el['Last Name'], {min:3, max: undefined})},First Name:${validator.isLength(el['First Name'], {min:3, max: undefined})},Address Line 1: ${validator.isLength(el['Address Line 1 - 1'], {min:1, max: undefined})},Address Line 2: ${validator.isLength(el['Address Line 2 - 1'], {min:1, max: undefined})},Address City:${validator.isLength(el['Address City - 1'], {min:1, max: undefined})}, Address Country:${validator.isLength(el['Address Country - 1'], {min:1, max: undefined})}, Address Zip:${validator.isLength(el['Address Zip - 1'], {min:1, max: undefined})}`;
+
                     switch (
                         validator.isEmail(el['Email Address']) &&
                         validator.isLength(el['Last Name'], {min:3, max: undefined}) &&
-                        validator.isLength(el['First Name'], {min:3, max: undefined})
+                        validator.isLength(el['First Name'], {min:3, max: undefined}) &&
+                        validator.isLength(el['Address Line 1 - 1'], {min:1, max: undefined}) &&
+                        validator.isLength(el['Address Line 2 - 1'], {min:1, max: undefined}) &&
+                        validator.isLength(el['Address City - 1'], {min:1, max: undefined}) &&
+                        validator.isLength(el['Address Country - 1'], {min:1, max: undefined}) &&
+                        validator.isLength(el['Address Zip - 1'], {min:1, max: undefined})
                         ) {
                         case true:
                             countSuccessfully++;
