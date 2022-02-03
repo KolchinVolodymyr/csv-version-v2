@@ -50,7 +50,7 @@ const handleSubmission = () => {
     })
     .catch((error) => {
         alert.show("Server response error. Status code: 500 ", {
-            title: "Random Alert Title"
+            title: "Server response error"
         });
     })
     .finally(()=>{
@@ -70,9 +70,9 @@ return (
             </div>
         </div>
         <button className="waves-effect waves-light btn" onClick={handleSubmission}>Upload file</button>
-        <a className="btn waves-effect waves-light position-btn" href='http://localhost:8080/download'>Download</a>
         {isShown &&
             <div>
+                <a className="btn waves-effect waves-light position-btn" href='http://localhost:8080/download'>Download</a>
                 <table>
                     <thead>
                         <tr>
@@ -82,7 +82,7 @@ return (
                     </thead>
                     {data.map((el, index)=>{
                         return(
-                            <tbody>
+                            <tbody key={index}>
                                 <tr>
                                     <td>string{el[0]}</td>
                                     <td>{el[1]}</td>
